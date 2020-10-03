@@ -73,9 +73,9 @@ class Explainer():
         # wrap the incoming masker object as a shap.Masker object
         if safe_isinstance(masker, "pandas.core.frame.DataFrame") or ((safe_isinstance(masker, "numpy.ndarray") or sp.sparse.issparse(masker)) and len(masker.shape) == 2):
             if algorithm == "partition":
-                self.masker = maskers.Partition(masker)
+                self.masker = maskers.Partition(masker, max_samples=None)
             else:
-                self.masker = maskers.Independent(masker)
+                self.masker = maskers.Independent(masker, max_samples=None)
         elif safe_isinstance(masker, ["transformers.PreTrainedTokenizer", "transformers.tokenization_utils_base.PreTrainedTokenizerBase"]):
             if (safe_isinstance(self.model, "transformers.PreTrainedModel") or safe_isinstance(self.model, "transformers.TFPreTrainedModel")) and safe_isinstance(self.model, MODELS_FOR_SEQ_TO_SEQ_CAUSAL_LM + MODELS_FOR_CAUSAL_LM):
                 # auto assign text infilling if model is a transformer model with lm head
